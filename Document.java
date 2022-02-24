@@ -11,16 +11,16 @@ public class Document {
         this.fontName = fontName;
         this.fontSize = fontSize;
         editor = new EditorHandler();
-        editor.push(new TextEditor(content));
-        editor.push(new FontNameEditor(fontName));
-        editor.push(new FontSizeEditor(fontSize));
     }
 
     public void undo(){
         var ed = editor.pop();
-        if(ed instanceof TextEditor) this.content = ((TextEditor) ed).getTextState();
-        if(ed instanceof FontNameEditor) this.fontName = ((FontNameEditor) ed).getFontNameState();
-        if(ed instanceof FontSizeEditor) this.fontSize = ((FontSizeEditor) ed).getFontSizeState();
+        this.setState(ed);
+    }
+    private void setState(Editor ed){
+        this.content = ed.getContentState();
+        this.fontSize = ed.getFontSizeState();
+        this.fontName = ed.getFontNameState();
     }
 
     public String getContent() {
@@ -29,7 +29,7 @@ public class Document {
 
     public void setContent(String content) {
         this.content = content;
-        editor.push(new TextEditor(content));
+        editor.push(new Editor(content,this.fontName,this.fontSize));
     }
 
     public String getFontName() {
@@ -38,7 +38,7 @@ public class Document {
 
     public void setFontName(String fontName) {
         this.fontName = fontName;
-        editor.push(new FontNameEditor(fontName));
+        editor.push(new Editor(this.content,fontName,this.fontSize));
     }
 
     public int getFontSize() {
@@ -47,7 +47,7 @@ public class Document {
 
     public void setFontSize(int fontSize) {
         this.fontSize = fontSize;
-        editor.push(new FontSizeEditor(fontSize));
+        editor.push(new Editor(this.content,this.fontName,fontSize));
     }
 
     @Override

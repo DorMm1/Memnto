@@ -3,25 +3,21 @@ import java.util.List;
 
 public class EditorHandler {
 
-    List<Editor> contentList;
-    List<Editor> fontNameList;
-    List<Editor> fontSizeList;
+    List<Editor> stateList;
+
 
     public EditorHandler() {
-        this.contentList = new ArrayList<>();
-        this.fontNameList = new ArrayList<>();
-        this.fontSizeList = new ArrayList<>();
+        this.stateList = new ArrayList<>();
+
     }
 
     public void push(Editor ed){
-        if(ed instanceof TextEditor) contentList.add(ed);
-        if(ed instanceof FontNameEditor) fontNameList.add(ed);
-        if(ed instanceof FontSizeEditor) fontSizeList.add(ed);
+        this.stateList.add(ed);
     }
 
     public Editor pop(){
-        Editor temp = this.contentList.get(this.contentList.size()-1);
-        this.contentList.remove(this.contentList.size()-1);
+        Editor temp = this.stateList.get(this.stateList.size()-1);
+        this.stateList.remove(this.stateList.size()-1);
         return temp;
     }
 
